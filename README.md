@@ -1,2 +1,2 @@
 # Mancala
-Pthon project TYPE:A ID:17
+Python project TYPE:A ID:17
