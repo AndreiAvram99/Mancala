@@ -1,6 +1,7 @@
 from config import *
 from components.scene import Scene
 from components.button import Button
+from components.game_board import GameBoard
 
 
 class SceneManager:
@@ -44,7 +45,8 @@ class SceneManager:
         choose_opponent_scene.add_components(choose_opponent_scene_components)
 
         #Create game scene
-        game_scene_components = [back_button]
+        game_board = GameBoard()
+        game_scene_components = [back_button, game_board]
         game_scene.add_components(game_scene_components)
 
         #Create settings scene
