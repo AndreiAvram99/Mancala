@@ -1,5 +1,7 @@
 from config import *
 from copy import deepcopy
+from random import randrange
+from random import randint
 
 
 class GameBoard(object):
@@ -143,7 +145,44 @@ class GameBoard(object):
         SCREEN.blit(text_img, (95 + 87 * (HOLES_PER_LINE - 1) - text_len / 3,
                                230 + 258))
 
+        self.draw_rocks()
+
         self.draw_final_game_message()
+
+    @staticmethod
+    def draw_rock(color, x, y, r):
+        pygame.draw.circle(SCREEN, color, [x, y], r)
+
+    def draw_rocks(self):
+        for line in range(HOLES_PER_COLUMN):
+            for column in range(1, HOLES_PER_LINE - 1):
+                for counter in range(self.game_matrix[line][column]):
+                    if line == 0:
+                        rock_line = randrange(240 + EPS, 325 - EPS)
+                    else:
+                        rock_line = randrange(435 + EPS, 520 - EPS)
+                    rock_column = randrange(160 + (column - 1) * 85 + EPS, 210 + (column - 1) * 85 - EPS)
+                    rock_radius = randrange(5, 7)
+                    rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
+                    rock_color = ROCKS_COLORS[rock_color_index]
+                    self.draw_rock(rock_color, rock_column, rock_line, rock_radius)
+
+        for counter in range(self.game_matrix[0][0]):
+            rock_line = randrange(240 + EPS, 510 - EPS)
+            rock_column = randrange(160 - 85 + EPS, 210 - 85 - EPS)
+            rock_radius = randrange(5, 7)
+            rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
+            rock_color = ROCKS_COLORS[rock_color_index]
+            self.draw_rock(rock_color, rock_column, rock_line, rock_radius)
+
+        for counter in range(self.game_matrix[1][-1]):
+            rock_line = randrange(240 + EPS, 510 - EPS)
+            rock_column = randrange(160 + 85 * (HOLES_PER_LINE - 2) + EPS, 210 + 85 * (HOLES_PER_LINE - 2) - EPS)
+            rock_radius = randrange(5, 7)
+            rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
+            rock_color = ROCKS_COLORS[rock_color_index]
+            self.draw_rock(rock_color, rock_column, rock_line, rock_radius)
+
 
     def draw_final_game_message(self):
         if self.winner != '':

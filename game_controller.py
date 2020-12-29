@@ -1,12 +1,14 @@
 from config import *
 from components.game_board import GameBoard
 from random import randint
+from scene_manager import SceneManager
 
 
 class GameController:
     def __init__(self):
         self.turn = FIRST_PLAYER_MARKER
         self.ai_player = False
+        self.ceva = False
 
     def reset_ai_player(self):
         self.ai_player = False
@@ -45,7 +47,7 @@ class GameController:
                 column = index + 1
         return [line, column]
 
-    def ai_play(self, game_board: GameBoard, run: bool):
+    def ai_play(self, game_board: GameBoard, scene_manager: SceneManager, run: bool):
         for event in pygame.event.get():
             if self.turn == AI_MARKER:
                 available_positions = []
@@ -60,6 +62,7 @@ class GameController:
                     game_board.make_move(0,
                                          available_positions[column],
                                          self.turn)
+                    scene_manager.draw_current_scene()
                     self.change_turn()
 
             elif event.type == pygame.MOUSEBUTTONUP:
@@ -75,6 +78,8 @@ class GameController:
                                          matrix_positions[1],
                                          self.turn)
 
+                    scene_manager.draw_current_scene()
+
                     if not (game_board.last_pit == (0, 0) or
                             game_board.last_pit == (1, HOLES_PER_LINE - 1)):
                         self.change_turn()
@@ -87,7 +92,7 @@ class GameController:
                 run = False
         return run
 
-    def other_player_play(self, game_board: GameBoard, run: bool):
+    def other_player_play(self, game_board: GameBoard, scene_manager: SceneManager, run: bool):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
@@ -101,6 +106,7 @@ class GameController:
                     game_board.make_move(matrix_positions[0],
                                          matrix_positions[1],
                                          self.turn)
+                    scene_manager.draw_current_scene()
 
                     if not (game_board.last_pit == (0, 0) or
                             game_board.last_pit == (1, HOLES_PER_LINE - 1)):

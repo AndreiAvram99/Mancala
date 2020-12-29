@@ -8,11 +8,12 @@ scene_manager = SceneManager()
 game_controller = GameController()
 
 run = True
+new_scene = current_scene = scene_manager.get_current_scene()
+SCREEN.blit(pygame.image.load(current_scene.background), (0, 0))
+scene_manager.draw_current_scene()
+
 while run:
     current_scene = scene_manager.get_current_scene()
-    SCREEN.blit(pygame.image.load(current_scene.background), (0, 0))
-
-    scene_manager.draw_current_scene()
 
     if current_scene.name == "main_menu":
         if current_scene.ui_components[0].action_button:
@@ -44,10 +45,11 @@ while run:
         if current_scene.ui_components[0].action_button:
             scene_manager.set_current_scene(scene_manager.scenes[CHOOSE_OPPONENT_SCENE])
         game_board = current_scene.ui_components[1]
+
         if game_controller.ai_player:
-            run = game_controller.ai_play(game_board, run)
+            run = game_controller.ai_play(game_board, scene_manager, run)
         else:
-            run = game_controller.other_player_play(game_board, run)
+            run = game_controller.other_player_play(game_board, scene_manager, run)
 
     if current_scene.name == "settings_scene":
         if current_scene.ui_components[0].action_button:
@@ -56,6 +58,11 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
+    new_scene = scene_manager.get_current_scene()
+    if new_scene != current_scene:
+        SCREEN.blit(pygame.image.load(new_scene.background), (0, 0))
+        scene_manager.draw_current_scene()
 
     pygame.display.update()
 
