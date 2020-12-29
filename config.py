@@ -13,10 +13,11 @@ CHOOSE_OPPONENT_SCENE = 1
 GAME_SCENE = 2
 SETTINGS_SCENE = 3
 
+AI_MARKER = 0
 FIRST_PLAYER_MARKER = 0
 SECOND_PLAYER_MARKER = 1
 
 HOLES_PER_LINE = 8
 HOLES_PER_COLUMN = 2
-GAME_MATRIX = [[0, 4, 4, 4, 4, 4, 4, 0],
-               [0, 4, 4, 4, 4, 4, 4, 0]]
+GAME_MATRIX = [[0, 1, 1, 1, 1, 1, 1, 0],
+               [0, 1, 1, 1, 1, 1, 1, 0]]

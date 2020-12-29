@@ -25,29 +25,29 @@ while run:
     if current_scene.name == "choose_opponent":
         if current_scene.ui_components[0].action_button:
             scene_manager.set_current_scene(scene_manager.scenes[GAME_SCENE])
+            scene_manager.scenes[GAME_SCENE].ui_components[1].reset_board()
+            game_controller.reset_turn()
+            game_controller.reset_ai_player()
+            scene_manager.scenes[GAME_SCENE].ui_components[1].winner = ""
+        
         if current_scene.ui_components[1].action_button:
             scene_manager.set_current_scene(scene_manager.scenes[GAME_SCENE])
+            scene_manager.scenes[GAME_SCENE].ui_components[1].reset_board()
+            game_controller.reset_turn()
+            game_controller.set_ai_player()
+            scene_manager.scenes[GAME_SCENE].ui_components[1].winner = ""
+
         if current_scene.ui_components[2].action_button:
             scene_manager.set_current_scene(scene_manager.scenes[MAIN_MENU_SCENE])
 
     if current_scene.name == "game_scene":
         if current_scene.ui_components[0].action_button:
             scene_manager.set_current_scene(scene_manager.scenes[CHOOSE_OPPONENT_SCENE])
-
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONUP:
-                pos = pygame.mouse.get_pos()
-                matrix_positions = game_controller.get_matrix_pos_from_mouse(pos)
-                current_scene.ui_components[1].make_move(matrix_positions[0],
-                                                         matrix_positions[1],
-                                                         game_controller.turn)
-
-                if not (current_scene.ui_components[1].last_hole == (0, 0)
-                        or current_scene.ui_components[1].last_hole == (1, HOLES_PER_LINE - 1)):
-                    game_controller.change_turn()
-
-            if event.type == pygame.QUIT:
-                run = False
+        game_board = current_scene.ui_components[1]
+        if game_controller.ai_player:
+            run = game_controller.ai_play(game_board, run)
+        else:
+            run = game_controller.other_player_play(game_board, run)
 
     if current_scene.name == "settings_scene":
         if current_scene.ui_components[0].action_button:
