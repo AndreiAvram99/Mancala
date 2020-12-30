@@ -194,4 +194,3 @@ class GameBoard(object):
                                        self.text_base_color)
             text_len = text_img.get_width()
             SCREEN.blit(text_img, ((SCREEN_WIDTH - text_len) / 2, 160))
-
