@@ -3,7 +3,7 @@ from scene_manager import SceneManager
 from game_controller import GameController
 
 pygame.mixer.init()
-pygame.mixer.Channel(0).play(pygame.mixer.Sound("background_music.mp3"))
+pygame.mixer.Channel(0).play(pygame.mixer.Sound("background_music.mp3"), -1)
 
 pygame.init()
 

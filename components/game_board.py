@@ -11,6 +11,7 @@ class GameBoard(object):
         self.last_pit = (0, 0)
         self.font = pygame.font.SysFont('arial', 15)
         self.text_base_color = (255, 255, 255)
+        self.last_drew_rocks = []
         self.winner = ""
 
     def reset_board(self):
@@ -105,16 +106,12 @@ class GameBoard(object):
             if self.game_matrix[0][0] > self.game_matrix[1][HOLES_PER_LINE - 1]:
                 if ai_game:
                     winner = "AI win"
-                    print("AI win")
                 else:
                     winner = "Player 1 win"
-                    print("Player 1 win")
             elif self.game_matrix[0][0] < self.game_matrix[1][HOLES_PER_LINE - 1]:
                 winner = "Player 2 win"
-                print("Player 2 win")
             else:
                 winner = "Draw"
-                print("Draw")
 
         return winner
 
@@ -153,38 +150,67 @@ class GameBoard(object):
         self.__draw_final_game_message()
 
     @staticmethod
-    def __draw_rock(color, x, y, r):
-        pygame.draw.circle(SCREEN, color, [x, y], r)
+    def __draw_rock(attributes):
+        pygame.draw.circle(SCREEN, attributes[0], [attributes[1], attributes[2]], attributes[3])
 
     def __draw_rocks(self):
+        last_drew_rocks_copy = deepcopy(self.last_drew_rocks)
+        self.last_drew_rocks.clear()
+
         for line in range(HOLES_PER_COLUMN):
             for column in range(1, HOLES_PER_LINE - 1):
-                for counter in range(self.game_matrix[line][column]):
-                    if line == 0:
-                        rock_line = randrange(240 + EPS, 325 - EPS)
-                    else:
-                        rock_line = randrange(435 + EPS, 520 - EPS)
-                    rock_column = randrange(160 + (column - 1) * 85 + EPS, 210 + (column - 1) * 85 - EPS)
-                    rock_radius = randrange(5, 7)
-                    rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
-                    rock_color = ROCKS_COLORS[rock_color_index]
-                    self.__draw_rock(rock_color, rock_column, rock_line, rock_radius)
+                last_drew_rocks_per_pit = []
+                target = column - 1 + line * (HOLES_PER_LINE - 2)
+                if len(last_drew_rocks_copy) != 0 and \
+                        self.game_matrix[line][column] == len(last_drew_rocks_copy[target]):
+                    for counter in range(len(last_drew_rocks_copy[column - 1 + line * (HOLES_PER_LINE - 2)])):
+                        self.__draw_rock(last_drew_rocks_copy[column - 1 + line * (HOLES_PER_LINE - 2)][counter])
+                    self.last_drew_rocks.append(last_drew_rocks_copy[column - 1 + line * (HOLES_PER_LINE - 2)])
+                else:
+                    for counter in range(self.game_matrix[line][column]):
+                        if line == 0:
+                            rock_line = randrange(240 + EPS, 325 - EPS)
+                        else:
+                            rock_line = randrange(435 + EPS, 520 - EPS)
+                        rock_column = randrange(160 + (column - 1) * 85 + EPS, 210 + (column - 1) * 85 - EPS)
+                        rock_radius = randrange(5, 7)
+                        rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
+                        rock_color = ROCKS_COLORS[rock_color_index]
+                        last_drew_rocks_per_pit.append([rock_color, rock_column, rock_line, rock_radius])
+                        self.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
+                    self.last_drew_rocks.append(last_drew_rocks_per_pit)
 
-        for counter in range(self.game_matrix[0][0]):
-            rock_line = randrange(240 + EPS, 510 - EPS)
-            rock_column = randrange(160 - 85 + EPS, 210 - 85 - EPS)
-            rock_radius = randrange(5, 7)
-            rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
-            rock_color = ROCKS_COLORS[rock_color_index]
-            self.__draw_rock(rock_color, rock_column, rock_line, rock_radius)
+        if last_drew_rocks_copy and self.game_matrix[0][0] == len(last_drew_rocks_copy[-2]):
+            for counter in range(len(last_drew_rocks_copy[-2])):
+                self.__draw_rock(last_drew_rocks_copy[-2][counter])
+            self.last_drew_rocks.append(last_drew_rocks_copy[-2])
+        else:
+            last_drew_rocks_per_pit = []
+            for counter in range(self.game_matrix[0][0]):
+                rock_line = randrange(240 + EPS, 510 - EPS)
+                rock_column = randrange(160 - 85 + EPS, 210 - 85 - EPS)
+                rock_radius = randrange(5, 7)
+                rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
+                rock_color = ROCKS_COLORS[rock_color_index]
+                last_drew_rocks_per_pit.append([rock_color, rock_column, rock_line, rock_radius])
+                self.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
+            self.last_drew_rocks.append(last_drew_rocks_per_pit)
 
-        for counter in range(self.game_matrix[1][-1]):
-            rock_line = randrange(240 + EPS, 500 - EPS)
-            rock_column = randrange(170 + 85 * (HOLES_PER_LINE - 2) + EPS, 220 + 85 * (HOLES_PER_LINE - 2) - EPS)
-            rock_radius = randrange(5, 7)
-            rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
-            rock_color = ROCKS_COLORS[rock_color_index]
-            self.__draw_rock(rock_color, rock_column, rock_line, rock_radius)
+        if last_drew_rocks_copy and self.game_matrix[1][-1] == len(last_drew_rocks_copy[-1]):
+            for counter in range(len(last_drew_rocks_copy[-1])):
+                self.__draw_rock(last_drew_rocks_copy[-1][counter])
+            self.last_drew_rocks.append(last_drew_rocks_copy[-1])
+        else:
+            last_drew_rocks_per_pit = []
+            for counter in range(self.game_matrix[1][-1]):
+                rock_line = randrange(240 + EPS, 500 - EPS)
+                rock_column = randrange(170 + 85 * (HOLES_PER_LINE - 2) + EPS, 220 + 85 * (HOLES_PER_LINE - 2) - EPS)
+                rock_radius = randrange(5, 7)
+                rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
+                rock_color = ROCKS_COLORS[rock_color_index]
+                last_drew_rocks_per_pit.append([rock_color, rock_column, rock_line, rock_radius])
+                self.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
+            self.last_drew_rocks.append(last_drew_rocks_per_pit)
 
     def __draw_final_game_message(self):
         if self.winner != '':
