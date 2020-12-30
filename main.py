@@ -54,7 +54,7 @@ while run:
         else:
             run = game_controller.other_player_play(game_board, scene_manager, run)
 
-    if current_scene.name == "settings_scene":
+    if current_scene.name == "rules_scene":
         if current_scene.ui_components[0].action_button:
             scene_manager.set_current_scene(scene_manager.scenes[MAIN_MENU_SCENE])
 
