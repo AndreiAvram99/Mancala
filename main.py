@@ -2,6 +2,9 @@ from config import *
 from scene_manager import SceneManager
 from game_controller import GameController
 
+pygame.mixer.init()
+pygame.mixer.Channel(0).play(pygame.mixer.Sound("background_music.mp3"))
+
 pygame.init()
 
 scene_manager = SceneManager()

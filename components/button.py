@@ -47,6 +47,8 @@ class Button(object):
         if button_rect.collidepoint(mouse_positions):
             if pygame.mouse.get_pressed(3)[0] == 1:
                 self.clicked = True
+                pygame.mixer.Channel(1).play(pygame.mixer.Sound("button_click_sound.mp3"))
+
             elif pygame.mouse.get_pressed(3)[0] == 0 and self.clicked:
                 self.clicked = False
                 action = True

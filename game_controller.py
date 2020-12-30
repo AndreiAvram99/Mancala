@@ -62,6 +62,7 @@ class GameController:
                     game_board.make_move(0,
                                          available_positions[column],
                                          self.turn)
+                    pygame.mixer.Channel(2).play(pygame.mixer.Sound("pit_select_sound.mp3"))
                     scene_manager.draw_current_scene()
                     self.change_turn()
 
@@ -77,7 +78,7 @@ class GameController:
                     game_board.make_move(matrix_positions[0],
                                          matrix_positions[1],
                                          self.turn)
-
+                    pygame.mixer.Channel(2).play(pygame.mixer.Sound("pit_select_sound.mp3"))
                     scene_manager.draw_current_scene()
 
                     if not (game_board.last_pit == (0, 0) or
@@ -106,6 +107,7 @@ class GameController:
                     game_board.make_move(matrix_positions[0],
                                          matrix_positions[1],
                                          self.turn)
+                    pygame.mixer.Channel(2).play(pygame.mixer.Sound("pit_select_sound.mp3"))
                     scene_manager.draw_current_scene()
 
                     if not (game_board.last_pit == (0, 0) or

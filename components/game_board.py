@@ -183,7 +183,6 @@ class GameBoard(object):
             rock_color = ROCKS_COLORS[rock_color_index]
             self.draw_rock(rock_color, rock_column, rock_line, rock_radius)
 
-
     def draw_final_game_message(self):
         if self.winner != '':
             new_font = pygame.font.SysFont('arial', 30)
