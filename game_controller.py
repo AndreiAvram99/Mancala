@@ -8,7 +8,6 @@ class GameController:
     def __init__(self):
         self.turn = FIRST_PLAYER_MARKER
         self.ai_player = False
-        self.ceva = False
 
     def reset_ai_player(self):
         self.ai_player = False
@@ -47,9 +46,9 @@ class GameController:
                 column = index + 1
         return [line, column]
 
-    def ai_play(self, game_board: GameBoard, scene_manager: SceneManager, run: bool):
+    def play(self, game_board: GameBoard, scene_manager: SceneManager, ai_player: bool, run: bool):
         for event in pygame.event.get():
-            if self.turn == AI_MARKER:
+            if ai_player and self.turn == AI_MARKER:
                 available_positions = []
                 for pit in enumerate(game_board.game_matrix[0][1:-1]):
                     if pit[1] != 0:
@@ -88,35 +87,7 @@ class GameController:
             winner = game_board.end_game(self.ai_player)
             if winner != '':
                 game_board.set_winner(winner)
-
-            if event.type == pygame.QUIT:
-                run = False
-        return run
-
-    def other_player_play(self, game_board: GameBoard, scene_manager: SceneManager, run: bool):
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONUP:
-                pos = pygame.mouse.get_pos()
-                matrix_positions = self.get_matrix_pos_from_mouse(pos)
-                if self.valid_move(matrix_positions[0],
-                                   matrix_positions[1],
-                                   self.turn,
-                                   game_board.game_matrix[matrix_positions[0]]
-                                                         [matrix_positions[1]]):
-
-                    game_board.make_move(matrix_positions[0],
-                                         matrix_positions[1],
-                                         self.turn)
-                    pygame.mixer.Channel(2).play(pygame.mixer.Sound("pit_select_sound.mp3"))
-                    scene_manager.draw_current_scene()
-
-                    if not (game_board.last_pit == (0, 0) or
-                            game_board.last_pit == (1, HOLES_PER_LINE - 1)):
-                        self.change_turn()
-
-                    winner = game_board.end_game(self.ai_player)
-                    if winner != '':
-                        game_board.set_winner(winner)
+                scene_manager.draw_current_scene()
 
             if event.type == pygame.QUIT:
                 run = False

@@ -48,11 +48,7 @@ while run:
         if current_scene.ui_components[0].action_button:
             scene_manager.set_current_scene(scene_manager.scenes[CHOOSE_OPPONENT_SCENE])
         game_board = current_scene.ui_components[1]
-
-        if game_controller.ai_player:
-            run = game_controller.ai_play(game_board, scene_manager, run)
-        else:
-            run = game_controller.other_player_play(game_board, scene_manager, run)
+        run = game_controller.play(game_board, scene_manager, game_controller.ai_player, run)
 
     if current_scene.name == "rules_scene":
         if current_scene.ui_components[0].action_button:

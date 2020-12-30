@@ -118,6 +118,9 @@ class GameBoard(object):
 
         return winner
 
+    def set_winner(self, winner):
+        self.winner = winner
+
     def draw_component(self):
         game_board_img = pygame.image.load('game_board.png')
         SCREEN.blit(game_board_img, (0, 0))
@@ -145,15 +148,15 @@ class GameBoard(object):
         SCREEN.blit(text_img, (95 + 87 * (HOLES_PER_LINE - 1) - text_len / 3,
                                230 + 258))
 
-        self.draw_rocks()
+        self.__draw_rocks()
 
-        self.draw_final_game_message()
+        self.__draw_final_game_message()
 
     @staticmethod
-    def draw_rock(color, x, y, r):
+    def __draw_rock(color, x, y, r):
         pygame.draw.circle(SCREEN, color, [x, y], r)
 
-    def draw_rocks(self):
+    def __draw_rocks(self):
         for line in range(HOLES_PER_COLUMN):
             for column in range(1, HOLES_PER_LINE - 1):
                 for counter in range(self.game_matrix[line][column]):
@@ -165,7 +168,7 @@ class GameBoard(object):
                     rock_radius = randrange(5, 7)
                     rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
                     rock_color = ROCKS_COLORS[rock_color_index]
-                    self.draw_rock(rock_color, rock_column, rock_line, rock_radius)
+                    self.__draw_rock(rock_color, rock_column, rock_line, rock_radius)
 
         for counter in range(self.game_matrix[0][0]):
             rock_line = randrange(240 + EPS, 510 - EPS)
@@ -173,17 +176,17 @@ class GameBoard(object):
             rock_radius = randrange(5, 7)
             rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
             rock_color = ROCKS_COLORS[rock_color_index]
-            self.draw_rock(rock_color, rock_column, rock_line, rock_radius)
+            self.__draw_rock(rock_color, rock_column, rock_line, rock_radius)
 
         for counter in range(self.game_matrix[1][-1]):
-            rock_line = randrange(240 + EPS, 510 - EPS)
-            rock_column = randrange(160 + 85 * (HOLES_PER_LINE - 2) + EPS, 210 + 85 * (HOLES_PER_LINE - 2) - EPS)
+            rock_line = randrange(240 + EPS, 500 - EPS)
+            rock_column = randrange(170 + 85 * (HOLES_PER_LINE - 2) + EPS, 220 + 85 * (HOLES_PER_LINE - 2) - EPS)
             rock_radius = randrange(5, 7)
             rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
             rock_color = ROCKS_COLORS[rock_color_index]
-            self.draw_rock(rock_color, rock_column, rock_line, rock_radius)
+            self.__draw_rock(rock_color, rock_column, rock_line, rock_radius)
 
-    def draw_final_game_message(self):
+    def __draw_final_game_message(self):
         if self.winner != '':
             new_font = pygame.font.SysFont('arial', 30)
             text_img = new_font.render(self.winner,
@@ -192,5 +195,3 @@ class GameBoard(object):
             text_len = text_img.get_width()
             SCREEN.blit(text_img, ((SCREEN_WIDTH - text_len) / 2, 160))
 
-    def set_winner(self, winner):
-        self.winner = winner
