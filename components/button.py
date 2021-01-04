@@ -11,7 +11,7 @@ class Button(object):
                  w=DEFAULT_BUTTON_WIDTH,
                  h=DEFAULT_BUTTON_HEIGHT,
                  background_base_color=BUTTON_DEFAULT_BACKGROUND_BASE_COLOR,
-                 text_base_color=BUTTON_DEFAULT_TEXT_BASE_COLOR):
+                 text_base_color=DEFAULT_TEXT_COLOR):
 
         self.text = text
         self.x = x

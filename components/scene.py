@@ -7,6 +7,9 @@ class Scene(object):
         self.ui_components = []
         self.background = background
 
+    def remove_component(self, index):
+        self.ui_components.pop(index)
+
     def add_component(self, component: object):
         self.ui_components.append(component)
 
