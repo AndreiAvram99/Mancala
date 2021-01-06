@@ -15,3 +15,8 @@
 {'ai_player': False, 'last_winner': 'Jorge', 'first_player/ai_name': 'Ana', 'second_player_name': 'Jorge', 'first_player/ai_score': 0, 'second_player_score': 1, 'nb_of_draw_games': 0}
 {'ai_player': True, 'last_winner': 'Ana', 'first_player/ai_name': 'Ana', 'second_player_name': 'Jorge', 'first_player/ai_score': 1, 'second_player_score': 0, 'nb_of_draw_games': 0}
 {'ai_player': True, 'last_winner': 'Lukas', 'first_player/ai_name': 'Maya', 'second_player_name': 'Lukas', 'first_player/ai_score': 0, 'second_player_score': 3, 'nb_of_draw_games': 0}
+{'ai_player': False, 'last_winner': 'George', 'first_player/ai_name': 'George', 'second_player_name': 'Denis', 'first_player/ai_score': 1, 'second_player_score': 1, 'nb_of_draw_games': 0}
+{'ai_player': True, 'last_winner': 'Denis', 'first_player/ai_name': 'George', 'second_player_name': 'Denis', 'first_player/ai_score': 0, 'second_player_score': 1, 'nb_of_draw_games': 0}
+{'ai_player': True, 'last_winner': 'George', 'first_player/ai_name': 'George', 'second_player_name': 'Denis', 'first_player/ai_score': 1, 'second_player_score': 1, 'nb_of_draw_games': 0}
+{'ai_player': True, 'last_winner': 'Andrew', 'first_player/ai_name': 'Andrew', 'second_player_name': 'Paul', 'first_player/ai_score': 1, 'second_player_score': 0, 'nb_of_draw_games': 0}
+{'ai_player': False, 'last_winner': 'Dan', 'first_player/ai_name': 'Radu', 'second_player_name': 'Dan', 'first_player/ai_score': 0, 'second_player_score': 1, 'nb_of_draw_games': 0}

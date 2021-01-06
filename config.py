@@ -65,4 +65,4 @@ DEFAULT_TB_HEIGHT = 40
 NAME_MAX_LEN = 15
 
 # Ranking component constant
-FIRST_PLAYERS = 5
+FIRST_PLAYERS_NB = 5

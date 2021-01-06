@@ -1,16 +1,47 @@
 import ast
-import operator
-
+from config import *
 from components.ranking import Ranking
 
 
 class RankingManager:
+    """ RankingManager docstring
+
+        Description:
+        _________
+        This class deals with creating the ranking and send it to Ranking class which draw it
+
+        Attributes:
+        ---------
+        ai_winners_dic: `dict`
+            Dictionary with AI players and their score
+        players_winners_dict: `dict`
+            Dictionary with players and their score
+        ranking_component: `Ranking`
+            Draw players(normal + AI) results into the scene
+
+        PublicMethods:
+        ---------
+        create_ranking(self)
+
+        PrivateMethods:
+        ---------
+        __create_ranking_dicts(self)
+
+        StaticMethods:
+        ---------
+        __get_first_players(dictionary: dict)
+        __sort_dict_by_values(dictionary: dict)
+
+    """
     def __init__(self, ranking_component: Ranking):
         self.ai_winners_dict = {}
         self.players_winners_dict = {}
         self.ranking_component = ranking_component
 
     def __create_ranking_dicts(self):
+        """ From games_file create the dictionaries with players, AI players and their score
+        :return:
+        """
         self.ai_winners_dict = {}
         self.players_winners_dict = {}
         winners_file = open('resources/games/games_file', 'r')
@@ -40,13 +71,43 @@ class RankingManager:
 
             file_line = winners_file.readline()
 
-    def create_ranking(self):
-        self.__create_ranking_dicts()
-        self.players_winners_dict = dict(sorted(self.players_winners_dict.items(),
-                                                key=operator.itemgetter(1),
-                                                reverse=True))
-        self.ai_winners_dict = dict(sorted(self.ai_winners_dict.items(),
-                                           key=operator.itemgetter(1),
-                                           reverse=True))
+    @staticmethod
+    def __get_first_players(dictionary: dict):
+        """ This method receive a dictionary and return a list with first (FIRST_PLAYERS_NB) players and their score
+        :param dictionary: `dict`
+            The dictionary from which the list will be extracted
+        :return first_players_list: `list`
+            List with first (FIRST_PLAYERS_NB) players and their score
+        """
+        if len(dictionary) < FIRST_PLAYERS_NB:
+            first_players_list = list(dictionary.items())[:len(dictionary)]
+        else:
+            first_players_list = list(dictionary.items())[:FIRST_PLAYERS_NB]
+        return first_players_list
 
-        self.ranking_component.draw_ranking(self.ai_winners_dict, self.players_winners_dict)
+    @staticmethod
+    def __sort_dict_by_values(dictionary: dict):
+        """This method receive a dictionary and sort it
+        :param dictionary: `dict`
+            The dictionary to be sorted
+        :return sorted_dict: `dict`
+            Sorted dictionary
+        """
+        sorted_values = sorted(dictionary.values(), reverse=True)
+        sorted_dict = {}
+        for i in sorted_values:
+            for k in dictionary.keys():
+                if dictionary[k] == i:
+                    sorted_dict[k] = dictionary[k]
+        return sorted_dict
+
+    def create_ranking(self):
+        """ Call __sort_dict_by_values and __get_first_players and send the result to Ranking class
+        which will draw it into the scene
+        :return:
+        """
+        self.__create_ranking_dicts()
+        self.players_winners_dict = self.__sort_dict_by_values(self.players_winners_dict)
+        self.ai_winners_dict = self.__sort_dict_by_values(self.ai_winners_dict)
+        self.ranking_component.draw_ranking(self.__get_first_players(self.ai_winners_dict),
+                                            self.__get_first_players(self.players_winners_dict))

@@ -3,30 +3,46 @@ from config import *
 
 
 class Ranking:
-    def __init__(self):
-        self.first_players = FIRST_PLAYERS
-        self.text_color = DEFAULT_TEXT_COLOR
-        self.font_size = 50
+    """ Ranking docstring
 
-    def draw_ranking(self, ai_winners_dict: dict, players_winners_dict: dict):
-        if len(ai_winners_dict) < self.first_players:
-            ai_winners_list = list(ai_winners_dict.items())[:len(ai_winners_dict)]
-        else:
-            ai_winners_list = list(ai_winners_dict.items())[:self.first_players]
+            Description:
+            _________
+            This class deals with drawing the ranking
 
-        if len(players_winners_dict) < self.first_players:
-            players_winners_list = list(players_winners_dict.items())[:len(players_winners_dict)]
-        else:
-            players_winners_list = list(players_winners_dict.items())[:self.first_players]
+            Attributes:
+            ---------
+            text_color: `[int, int, int]`
+                Ranking text color
+            font_size: `int`
+                Ranking text size
 
-        label = Label("AI TOP " + str(self.first_players),
+            PublicMethods:
+            ---------
+            draw_ranking(self, ai_winners_list: list, players_winners_list: list)
+    """
+    def __init__(self,
+                 text_color=DEFAULT_TEXT_COLOR,
+                 font_size=50):
+        self.text_color = text_color
+        self.font_size = font_size
+
+    def draw_ranking(self, ai_winners_list: list, players_winners_list: list):
+        """ Receive winners list from RankingManager, create the labels with the winners and their score and
+        draw them
+        :param ai_winners_list:  `list`
+            First (FIRST_PLAYERS_NB) AI players winners
+        :param players_winners_list: `list`
+            First (FIRST_PLAYERS_NB) players winners
+        :return:
+        """
+        label = Label("AI TOP " + str(FIRST_PLAYERS_NB),
                       80,
                       120,
                       [249, 166, 2],
                       self.font_size)
         label.draw_component()
 
-        label = Label("PLAYERS TOP " + str(self.first_players),
+        label = Label("PLAYERS TOP " + str(FIRST_PLAYERS_NB),
                       430,
                       120,
                       [249, 166, 2],

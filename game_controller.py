@@ -32,16 +32,21 @@ class GameController:
         second_player_name: `str`
             Contains the name of the second player
         first_player_score: `int`
-            Contains first player score for the same players
+            Contains first player score for games with the same players
         second_player_score: `int`
-            Contains second player score for the same players
+            Contains second player score for games with the same players
         is_new_game: `boolean`
             Check if the play again button has been pressed
         nb_of_draw_games: `int`
-            Counts the number of draw games for the same players
+            Counts the number of draw games with the same players
+        game_dict: `dict`
+            Store information about all games
 
         PublicMethods:
         ---------
+        complete_game_dict(self)
+        play_again_reset(self)
+        reset_all(self)
         reset_ai_player(self)
         set_ai_player(self)
         reset_nb_of_draw_games(self)
@@ -86,6 +91,9 @@ class GameController:
         self.game_dict = {}
 
     def complete_game_dict(self):
+        """ Restores the dictionary if more games have been added.
+        :return:
+        """
         games_file = open('resources/games/games_file', 'a')
         game_controller_dict = self.__dict__
         if game_controller_dict["first_player_score"] != 0 or \
@@ -102,12 +110,18 @@ class GameController:
             games_file.write(str(self.game_dict))
 
     def play_again_reset(self):
+        """ Reset attributes in case of play again with the same players
+        :return:
+        """
         self.reset_turn()
         self.reset_board()
         self.reset_winner()
         self.set_is_new_game()
 
     def reset_all(self):
+        """ Reset attributes in case of change players
+        :return:
+        """
         self.reset_board()
         self.reset_turn()
         self.reset_winner()
