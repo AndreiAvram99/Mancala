@@ -38,8 +38,8 @@ opposite
   - The fourth menu option closes the game.
 
 ### How to start the project:
-  First of all should install pygame (command: pip install pygame)
-  Execute the main script from "Mancala/" directory (command: python main.py)
+  - First of all should install pygame (command: pip install pygame)
+  - Execute the main script from "Mancala/" directory (command: python main.py)
   
 ### Classes
     Controllers:
