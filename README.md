@@ -1,7 +1,7 @@
 # Mancala
 Python project TYPE:A ID:17
 
-# Game Information
+## Game Information
 Game description:
   Mancala is a generic name for a family of two-player turn-based strategy board games played with small stones, beans, or seeds and rows of holes or pits in the earth, a board or other playing surface. The objective is usually to capture all or some set of the opponent's pieces.
 
@@ -29,7 +29,7 @@ opposite
 8. The player who still has pieces on his/her side of the board when the game ends captures all of those pieces.
 9. Count all the pieces in each Mancala. The winner is the player with the most pieces.
 
-# Application flow
+## Application flow
   The game starts the menu scene from which you can choose from 4 options.
 
   - The first option is play which opens the scene of choosing the opponent, in which you can choose if you want to play with another player or with the computer, after choosing the opponent it is necessary to enter the players' names even for AI, after completing this step the scene opens of the game and it starts here the player can choose if he plays another round or returns to the stage where he chooses his opponent again.
@@ -37,7 +37,7 @@ opposite
   - The third menu option displays a ranking of the best FIRST_PLAYERS_NB players, FIRST_PLAYERS_NB is set in the configuration file.
   - The fourth menu option closes the game.
   
-  # Classes
+## Classes
     Controllers:
       - SceneManager
       Description:
@@ -77,7 +77,7 @@ opposite
       - Label
         This class deals with labels drawing
 
-  # Resources 
+## Resources 
     Game board img: https://www.google.com/url?sa=i&url=https%3A%2F%2Fapkpure.com%2Fmancala%2Fcom.appon.mancala&psig=AOvVaw0WjUYicMHuUsle36iR8cwT&ust=1610012022360000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNi-xa2Ah-4CFQAAAAAdAAAAABBA
     Background img: https://i.pinimg.com/736x/b6/83/0d/b6830dab296638ac8600b15cf90ea2b3.jpg
     Pygame doc: https://www.pygame.org/docs/
