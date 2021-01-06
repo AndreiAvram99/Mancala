@@ -6,12 +6,12 @@ Game description:
   Mancala is a generic name for a family of two-player turn-based strategy board games played with small stones, beans, or seeds and rows of holes or pits in the earth, a board or other playing surface. The objective is usually to capture all or some set of the opponent's pieces.
 
 Contents:
- 1 Mancala board
- 48 pieces (also called “rocks”)
+ - 1 Mancala board
+ - 48 pieces (also called “rocks”)
 Set Up:
- The Mancala board is made up of two rows of six pockets (also called “holes,” or “pits”) each.
- Four pieces are placed in each of the 12 pockets. The color of the pieces is irrelevant.
- Each player has a “store” (also called a “Mancala”) to his/her right side of the Mancala board.
+ - The Mancala board is made up of two rows of six pockets (also called “holes,” or “pits”) each.
+ - Four pieces are placed in each of the 12 pockets. The color of the pieces is irrelevant.
+ - Each player has a “store” (also called a “Mancala”) to his/her right side of the Mancala board.
 
 Object:
  The object of the game is to collect the most pieces by the end of the game.
