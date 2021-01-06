@@ -83,6 +83,37 @@ class GameController:
         self.second_player_score = 0
         self.is_new_game = True
         self.nb_of_draw_games = 0
+        self.game_dict = {}
+
+    def complete_game_dict(self):
+        games_file = open('resources/games/games_file', 'a')
+        game_controller_dict = self.__dict__
+        if game_controller_dict["first_player_score"] != 0 or \
+                game_controller_dict["second_player_score"] != 0 or \
+                game_controller_dict["nb_of_draw_games"] != 0:
+            self.game_dict["ai_player"] = game_controller_dict["ai_player"]
+            self.game_dict["last_winner"] = game_controller_dict["winner"]
+            self.game_dict["first_player/ai_name"] = game_controller_dict["first_player_name"]
+            self.game_dict["second_player_name"] = game_controller_dict["second_player_name"]
+            self.game_dict["first_player/ai_score"] = game_controller_dict["first_player_score"]
+            self.game_dict["second_player_score"] = game_controller_dict["second_player_score"]
+            self.game_dict["nb_of_draw_games"] = game_controller_dict["nb_of_draw_games"]
+            games_file.write('\n')
+            games_file.write(str(self.game_dict))
+
+    def play_again_reset(self):
+        self.reset_turn()
+        self.reset_board()
+        self.reset_winner()
+        self.set_is_new_game()
+
+    def reset_all(self):
+        self.reset_board()
+        self.reset_turn()
+        self.reset_winner()
+        self.set_is_new_game()
+        self.reset_nb_of_draw_games()
+        self.reset_scores()
 
     def reset_ai_player(self):
         """Reset the flag for AI when the player return to the choose opponent scene

@@ -76,12 +76,14 @@ class SceneManager:
         game_scene = Scene("game_scene", './resources/normal_background.png')
         rules_scene = Scene("rules_scene", './resources/info_background.png')
         select_names_scene = Scene("select_names_scene", './resources/custom_background.png')
+        ranking_scene = Scene("ranking_scene", './resources/normal_background.png')
 
         #Create menu scene
         play_button = Button("Play", (SCREEN_WIDTH - DEFAULT_BUTTON_WIDTH) / 2, FIRST_LINE_LAYOUT)
         rules_button = Button("Rules", (SCREEN_WIDTH - DEFAULT_BUTTON_WIDTH) / 2, SECOND_LINE_LAYOUT)
-        quit_button = Button("Quit", (SCREEN_WIDTH - DEFAULT_BUTTON_WIDTH) / 2, THIRD_LINE_LAYOUT)
-        main_menu_components = [quit_button, play_button, rules_button]
+        ranking_button = Button("Ranking", (SCREEN_WIDTH - DEFAULT_BUTTON_WIDTH) / 2, THIRD_LINE_LAYOUT)
+        quit_button = Button("Quit", (SCREEN_WIDTH - DEFAULT_BUTTON_WIDTH) / 2, FOURTH_LINE_LAYOUT)
+        main_menu_components = [quit_button, play_button, rules_button, ranking_button]
         main_menu_scene.add_components(main_menu_components)
 
         #Create choose opponent scene
@@ -113,5 +115,9 @@ class SceneManager:
         settings_scene_components = [back_button]
         rules_scene.add_components(settings_scene_components)
 
-        scenes = [main_menu_scene, choose_opponent_scene, game_scene, rules_scene, select_names_scene]
+        # Create ranking scene
+        rank_scene_components = [back_button]
+        ranking_scene.add_components(rank_scene_components)
+
+        scenes = [main_menu_scene, choose_opponent_scene, game_scene, rules_scene, select_names_scene, ranking_scene]
         return scenes
