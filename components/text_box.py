@@ -6,7 +6,7 @@ class TextBox:
 
             Description:
             _________
-            This class deals with TextBox drawing and functionality
+            This class deals with text box drawing and functionality
 
             Attributes:
             ---------

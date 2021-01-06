@@ -7,7 +7,7 @@ class Button:
 
     Description:
     _________
-    This class deals with buttons functionality and design
+    This class deals with buttons drawing and functionality
 
     Attributes:
     ---------
