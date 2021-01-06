@@ -36,6 +36,10 @@ opposite
   - The second menu option shows the rules of the game
   - The third menu option displays a ranking of the best FIRST_PLAYERS_NB players, FIRST_PLAYERS_NB is set in the configuration file.
   - The fourth menu option closes the game.
+
+### How to start the project:
+  First of all should install pygame (command: pip install pygame)
+  Execute the main script from "Mancala/" directory (command: python main.py)
   
 ### Classes
     Controllers:
@@ -76,6 +80,7 @@ opposite
         
       - Label
         This class deals with labels drawing
+
 
 ### Resources 
     Game board img: https://www.google.com/url?sa=i&url=https%3A%2F%2Fapkpure.com%2Fmancala%2Fcom.appon.mancala&psig=AOvVaw0WjUYicMHuUsle36iR8cwT&ust=1610012022360000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNi-xa2Ah-4CFQAAAAAdAAAAABBA
