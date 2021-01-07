@@ -49,9 +49,9 @@ class RankingManager:
 
         while file_line:
             game_info = ast.literal_eval(file_line)
-            first_player_name = game_info['first_player/ai_name']
+            first_player_name = game_info['first_player_name']
             second_player_name = game_info['second_player_name']
-            first_player_score = game_info['first_player/ai_score']
+            first_player_score = game_info['first_player_score']
             second_player_score = game_info['second_player_score']
 
             if game_info['ai_player']:

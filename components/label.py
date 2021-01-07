@@ -41,6 +41,7 @@ class Label:
         self.y = y
         self.text_base_color = text_base_color
         self.font = pygame.font.SysFont('arial', font_size)
+        self.text_img = self.font.render(self.text, True, self.text_base_color)
 
     def set_xy(self, x, y):
         """ Set label coordinates
@@ -60,13 +61,8 @@ class Label:
         """
         return self.text
 
-    def draw_component(self):
-        """ Each graphic component has a method that allows it to be drawn (draw_component)
-        This draw the label into the scene
-        :return:
-        """
-        text_img = self.font.render(self.text, True, self.text_base_color)
-        SCREEN.blit(text_img, (self.x, self.y))
+    def get_text_img_len(self):
+        return self.text_img.get_width()
 
     def get_text_len(self):
         """ Return the length of the label text
@@ -74,3 +70,10 @@ class Label:
             Length of label text
         """
         return len(self.text)
+
+    def draw_component(self):
+        """ Each graphic component has a method that allows it to be drawn (draw_component)
+        This draw the label into the scene
+        :return:
+        """
+        SCREEN.blit(self.text_img, (self.x, self.y))

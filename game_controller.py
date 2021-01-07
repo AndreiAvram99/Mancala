@@ -77,7 +77,7 @@ class GameController:
 
     """
     def __init__(self, game_board: GameBoard):
-        self.turn = FIRST_PLAYER_MARKER
+        self.turn = randint(0, 1)
         self.ai_player = False
         self.game_board = game_board
         self.winner = ""
@@ -89,25 +89,17 @@ class GameController:
         self.is_new_game = True
         self.nb_of_draw_games = 0
         self.game_dict = {}
+        self.turn_association = {}
 
     def complete_game_dict(self):
         """ Restores the dictionary if more games have been added.
         :return:
         """
         games_file = open('resources/games/games_file', 'a')
-        game_controller_dict = self.__dict__
-        if game_controller_dict["first_player_score"] != 0 or \
-                game_controller_dict["second_player_score"] != 0 or \
-                game_controller_dict["nb_of_draw_games"] != 0:
-            self.game_dict["ai_player"] = game_controller_dict["ai_player"]
-            self.game_dict["last_winner"] = game_controller_dict["winner"]
-            self.game_dict["first_player/ai_name"] = game_controller_dict["first_player_name"]
-            self.game_dict["second_player_name"] = game_controller_dict["second_player_name"]
-            self.game_dict["first_player/ai_score"] = game_controller_dict["first_player_score"]
-            self.game_dict["second_player_score"] = game_controller_dict["second_player_score"]
-            self.game_dict["nb_of_draw_games"] = game_controller_dict["nb_of_draw_games"]
-            games_file.write('\n')
-            games_file.write(str(self.game_dict))
+        self.game_dict = self.__dict__.copy()
+        self.game_dict.pop('game_board')
+        self.game_dict.pop('game_dict')
+        games_file.write(str(self.game_dict) + '\n')
 
     def play_again_reset(self):
         """ Reset attributes in case of play again with the same players
@@ -117,6 +109,8 @@ class GameController:
         self.reset_board()
         self.reset_winner()
         self.set_is_new_game()
+        self.game_board.draw_component()
+        self.game_board.draw_turn(self.turn_association[self.turn])
 
     def reset_all(self):
         """ Reset attributes in case of change players
@@ -147,7 +141,7 @@ class GameController:
         """
         self.nb_of_draw_games = 0
 
-    def set_players_names(self, first_player_name, second_player_name):
+    def set_players_names_and_scores(self, first_player_name, second_player_name):
         """ Set the players names and sends them to the game board to draw them
         :param first_player_name: `str`
             Contains first player name
@@ -157,6 +151,7 @@ class GameController:
         """
         self.first_player_name = first_player_name
         self.second_player_name = second_player_name
+        self.turn_association = {0: self.first_player_name, 1: self.second_player_name}
         self.game_board.set_players_names_labels(first_player_name, second_player_name)
         self.game_board.set_players_scores_labels(self.first_player_score, self.second_player_score)
 
@@ -177,7 +172,7 @@ class GameController:
         """ Reset the turn when a game is over
         :return:
         """
-        self.turn = 0
+        self.turn = randint(0, 1)
 
     def reset_board(self):
         """ Reset game board configuration when a game is over
@@ -337,6 +332,7 @@ class GameController:
         for line in range(PITS_PER_COLUMN):
             for column in range(1, PITS_PER_LINE - 1):
                 self.game_board.game_matrix[line][column] = 0
+        self.game_board.draw_component()
 
     def __end_game(self):
         """ Check if a player has run out of rocks on his line.
@@ -360,6 +356,7 @@ class GameController:
             self.game_board.game_matrix[0][0] += sum(self.game_board.game_matrix[0][1:-1])
             self.game_board.game_matrix[1][0] = self.game_board.game_matrix[0][0]
             finish = True
+
         if finish:
             self.__clear_left_rocks()
             if self.game_board.game_matrix[0][0] > self.game_board.game_matrix[1][-1]:
@@ -391,11 +388,17 @@ class GameController:
             else return False
         """
         if line == -1 or column == -1:
+            self.game_board.draw_component()
+            self.game_board.draw_invalid_move_label("Invalid move('click outside your pits')")
             return False
         if line != turn:
+            self.game_board.draw_component()
+            self.game_board.draw_invalid_move_label("Invalid move('click opponent's pit')")
             return False
         nb_of_rocks = self.game_board.game_matrix[line][column]
         if nb_of_rocks == 0:
+            self.game_board.draw_component()
+            self.game_board.draw_invalid_move_label("Invalid move('you don't have rocks in this pit')")
             return False
         return True
 
@@ -446,34 +449,35 @@ class GameController:
                     self.game_board.draw_component()
                     if not (self.last_pit == (0, 0)):
                         self.change_turn()
+                    self.game_board.draw_turn(self.turn_association[self.turn])
 
             # Player move
             elif event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 matrix_positions = self.get_matrix_pos_from_mouse(pos)
-                if self.valid_move(matrix_positions[0],
-                                   matrix_positions[1],
-                                   self.turn,
-                                   ):
+                if not self.winner:
+                    if self.valid_move(matrix_positions[0], matrix_positions[1], self.turn):
 
-                    self.__make_move(matrix_positions[0], matrix_positions[1], self.turn)
-                    pygame.mixer.Channel(2).play(pygame.mixer.Sound("resources/pit_select_sound.mp3"))
-                    self.game_board.draw_component()
+                        self.__make_move(matrix_positions[0], matrix_positions[1], self.turn)
+                        pygame.mixer.Channel(2).play(pygame.mixer.Sound("resources/pit_select_sound.mp3"))
+                        self.game_board.draw_component()
 
-                    if not (self.last_pit == (0, 0) or
-                            self.last_pit == (1, PITS_PER_LINE - 1)):
-                        self.change_turn()
+                        if not (self.last_pit == (0, 0) or
+                                self.last_pit == (1, PITS_PER_LINE - 1)):
+                            self.change_turn()
+                        self.game_board.draw_turn(self.turn_association[self.turn])
 
             if self.is_new_game:
-                winner = self.__end_game()
-                if winner != '':
-                    if winner == "Draw":
+                self.winner = self.__end_game()
+                if self.winner != '':
+                    if self.winner == "Draw":
                         self.nb_of_draw_games += 1
                     self.game_board.set_players_scores_labels(self.first_player_score, self.second_player_score)
-                    self.is_new_game = False
-                    self.set_winner(winner)
                     self.game_board.draw_component()
+                    self.game_board.draw_final_game_message(self.winner)
+                    self.is_new_game = False
 
             if event.type == pygame.QUIT:
+                self.complete_game_dict()
                 return False
         return True

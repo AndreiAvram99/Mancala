@@ -5,8 +5,8 @@ from scene_manager import SceneManager
 from game_controller import GameController
 
 # Background sound
-pygame.mixer.init()
-pygame.mixer.Channel(0).play(pygame.mixer.Sound("./resources/background_music.mp3"), -1)
+# pygame.mixer.init()
+# pygame.mixer.Channel(0).play(pygame.mixer.Sound("./resources/background_music.mp3"), -1)
 
 # Init pygame
 pygame.init()
@@ -58,8 +58,8 @@ while run:
             if len(current_scene.scene_components[FIRST_PLAYER_TB_COMPONENT].text) and \
                     len(current_scene.scene_components[SECOND_PLAYER_TB_COMPONENT].text):
                 scene_manager.set_current_scene(scene_manager.scenes[GAME_SCENE])
-                game_controller.set_players_names(current_scene.scene_components[FIRST_PLAYER_TB_COMPONENT].text,
-                                                  current_scene.scene_components[SECOND_PLAYER_TB_COMPONENT].text)
+                game_controller.set_players_names_and_scores(current_scene.scene_components[FIRST_PLAYER_TB_COMPONENT].text,
+                                                             current_scene.scene_components[SECOND_PLAYER_TB_COMPONENT].text)
         names_tb = [current_scene.scene_components[FIRST_PLAYER_TB_COMPONENT],
                     current_scene.scene_components[SECOND_PLAYER_TB_COMPONENT]]
         for event in pygame.event.get():
@@ -76,8 +76,16 @@ while run:
             game_controller.complete_game_dict()
             game_controller.reset_all()
         if current_scene.scene_components[PLAY_AGAIN_BUTTON_COMPONENT].action_button:
+            scene_manager.set_current_scene(scene_manager.scenes[POPUP_SCENE])
+            # game_controller.play_again_reset()
+
+    # Popup scene
+    if current_scene.name == "popup_scene":
+        if current_scene.scene_components[YES_BUTTON_COMPONENT].action_button:
+            scene_manager.set_current_scene(scene_manager.scenes[GAME_SCENE])
             game_controller.play_again_reset()
-            scene_manager.draw_current_scene()
+        if current_scene.scene_components[NO_BUTTON_COMPONENT].action_button:
+            scene_manager.set_current_scene(scene_manager.scenes[GAME_SCENE])
 
     # Rules scene
     if current_scene.name == "rules_scene":
@@ -95,12 +103,13 @@ while run:
         scene_manager.draw_current_scene()
         if new_scene.name == "ranking_scene":
             ranking_manager.create_ranking()
+        if new_scene.name == "game_scene":
+            game_controller.game_board.draw_turn(game_controller.turn_association[game_controller.turn])
 
     # Close window event
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_controller.complete_game_dict()
-
             run = False
 
     clock.tick(30)

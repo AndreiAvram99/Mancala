@@ -1,4 +1,5 @@
 from components.label import Label
+from components.panel import Panel
 from components.text_box import TextBox
 from config import *
 from components.scene import Scene
@@ -77,6 +78,7 @@ class SceneManager:
         rules_scene = Scene("rules_scene", './resources/info_background.png')
         select_names_scene = Scene("select_names_scene", './resources/custom_background.png')
         ranking_scene = Scene("ranking_scene", './resources/normal_background.png')
+        popup_scene = Scene("popup_scene", "./resources/normal_background.png")
 
         #Create menu scene
         play_button = Button("Play", (SCREEN_WIDTH - DEFAULT_BUTTON_WIDTH) / 2, FIRST_LINE_LAYOUT)
@@ -119,5 +121,29 @@ class SceneManager:
         rank_scene_components = [back_button]
         ranking_scene.add_components(rank_scene_components)
 
-        scenes = [main_menu_scene, choose_opponent_scene, game_scene, rules_scene, select_names_scene, ranking_scene]
+        # Create popup scene
+        margin_top = 200
+        margin_left = 100
+        panel_width = SCREEN_WIDTH - 2 * margin_left
+        panel_height = SCREEN_HEIGHT - 2 * margin_top
+        panel = Panel(margin_left,
+                      margin_top,
+                      panel_width,
+                      panel_height,
+                      panel_color=[117, 73, 39])
+        warning_label = Label("Are you sure? The game board will be reset!")
+        warning_label.set_xy((SCREEN_WIDTH - warning_label.get_text_img_len()) / 2, margin_top + 50)
+
+        yes_button = Button("Yes", margin_left + 60, margin_top + panel_height - 75, w=160, h=50)
+        no_button = Button("No", SCREEN_WIDTH - margin_left - 160 - 60, margin_top + panel_height - 75, w=160, h=50)
+        popup_scene_components = game_scene_components + [panel, warning_label, yes_button, no_button]
+        popup_scene.add_components(popup_scene_components)
+
+        scenes = [main_menu_scene,
+                  choose_opponent_scene,
+                  game_scene,
+                  rules_scene,
+                  select_names_scene,
+                  ranking_scene,
+                  popup_scene]
         return scenes

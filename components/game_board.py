@@ -1,5 +1,6 @@
 from pygame import Rect
 
+from components.label import Label
 from config import *
 from copy import deepcopy
 from random import randrange
@@ -53,12 +54,10 @@ class GameBoard:
 
     def __init__(self):
         self.game_matrix = deepcopy(GAME_MATRIX)
-        self.font = pygame.font.SysFont('arial', 15)
         self.text_base_color = DEFAULT_TEXT_COLOR
         self.last_drew_rocks = []
-        self.winner = ""
-        self.first_player_label = ""
-        self.second_player_label = ""
+        self.first_player_label_text = ""
+        self.second_player_label_text = ""
         self.first_player_score_label = ""
         self.second_player_score_label = ""
 
@@ -70,8 +69,8 @@ class GameBoard:
             Second player name
         :return:
         """
-        self.first_player_label = first_player_label
-        self.second_player_label = second_player_label
+        self.first_player_label_text = first_player_label
+        self.second_player_label_text = second_player_label
 
     def set_players_scores_labels(self, first_player_score: int, second_player_score: int):
         """ Set players scores labels value
@@ -96,33 +95,6 @@ class GameBoard:
         self.__draw_players_labels()
         self.__draw_rocks_nb_labels()
         self.__draw_rocks()
-        self.__draw_final_game_message()
-
-    def __draw_players_labels(self):
-        """ For players names labels
-        :return:
-        """
-        #First player name plus score
-        text_img = pygame.font.SysFont('arial', 30).render(self.first_player_label + ": " +
-                                                           self.first_player_score_label,
-                                                           True,
-                                                           self.text_base_color)
-        text_len = text_img.get_width()
-
-        button_rect = Rect(50 - 5, 100, text_len + 15, 40)
-        pygame.draw.rect(SCREEN, BUTTON_DEFAULT_BACKGROUND_BASE_COLOR, button_rect)
-        SCREEN.blit(text_img, (50, 100))
-
-        # Second player name plus score
-        text_img = pygame.font.SysFont('arial', 30).render(self.second_player_label + ": " +
-                                                           self.second_player_score_label,
-                                                           True,
-                                                           self.text_base_color)
-        text_len = text_img.get_width()
-        button_rect = Rect(30 + 87 * (PITS_PER_LINE - 1) - text_len / 3 - 5, 235 + 318, text_len + 15, 40)
-        pygame.draw.rect(SCREEN, BUTTON_DEFAULT_BACKGROUND_BASE_COLOR, button_rect)
-        SCREEN.blit(text_img, (30 + 87 * (PITS_PER_LINE - 1) - text_len / 3,
-                               235 + 318))
 
     def __draw_rocks_nb_labels(self):
         """ For all pits and mancala draw number of rocks label
@@ -131,28 +103,23 @@ class GameBoard:
         # Labels for pits
         for line in range(PITS_PER_COLUMN):
             for column in range(1, PITS_PER_LINE - 1):
-                text_img = self.font.render(str(self.game_matrix[line][column]),
-                                            True,
-                                            self.text_base_color)
-                text_len = text_img.get_width()
-                SCREEN.blit(text_img, (95 + 87 * column - text_len / 3,
-                                       230 + 185 * line))
+                text = str(self.game_matrix[line][column])
+                label = Label(text, text_base_color=self.text_base_color, font_size=15)
+                label.set_xy(95 + 87 * column - label.get_text_img_len() / 3,
+                             230 + 185 * line)
+                label.draw_component()
 
         # Labels for first mancala
-        text_img = self.font.render(str(self.game_matrix[0][0]),
-                                    True,
-                                    self.text_base_color)
-        text_len = text_img.get_width()
-        SCREEN.blit(text_img, (97 - text_len / 3,
-                               230))
+        text = str(self.game_matrix[0][0])
+        label = Label(text, text_base_color=self.text_base_color, font_size=15)
+        label.set_xy(97 - label.get_text_img_len() / 3, 230)
+        label.draw_component()
 
         # Labels for second mancala
-        text_img = self.font.render(str(self.game_matrix[1][-1]),
-                                    True,
-                                    self.text_base_color)
-        text_len = text_img.get_width()
-        SCREEN.blit(text_img, (95 + 87 * (PITS_PER_LINE - 1) - text_len / 3,
-                               230 + 258))
+        text = str(self.game_matrix[1][-1])
+        label = Label(text, text_base_color=self.text_base_color, font_size=15)
+        label.set_xy(95 + 87 * (PITS_PER_LINE - 1) - label.get_text_img_len() / 3, 488)
+        label.draw_component()
 
     @staticmethod
     def __draw_rock(attributes):
@@ -186,12 +153,12 @@ class GameBoard:
                         self.__draw_rock(last_drew_rocks_copy[target][counter])
                     self.last_drew_rocks.append(last_drew_rocks_copy[target])
                 else:
-                    for counter in range(self.game_matrix[line][column]):
+                    for _ in range(self.game_matrix[line][column]):
                         if line == 0:
-                            rock_line = randrange(240 + EPS, 325 - EPS)
+                            rock_line = randrange(240 + ROCKS_CENTER_EPS, 325 - ROCKS_CENTER_EPS)
                         else:
-                            rock_line = randrange(435 + EPS, 520 - EPS)
-                        rock_column = randrange(160 + (column - 1) * 85 + EPS, 210 + (column - 1) * 85 - EPS)
+                            rock_line = randrange(435 + ROCKS_CENTER_EPS, 520 - ROCKS_CENTER_EPS)
+                        rock_column = randrange(160 + (column - 1) * 85 + ROCKS_CENTER_EPS, 210 + (column - 1) * 85 - ROCKS_CENTER_EPS)
                         rock_radius = randrange(4, 7)
                         rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
                         rock_color = ROCKS_COLORS[rock_color_index]
@@ -205,9 +172,9 @@ class GameBoard:
             self.last_drew_rocks.append(last_drew_rocks_copy[-2])
         else:
             last_drew_rocks_per_pit = []
-            for counter in range(self.game_matrix[0][0]):
-                rock_line = randrange(240 + EPS, 510 - EPS)
-                rock_column = randrange(160 - 85 + EPS, 210 - 85 - EPS)
+            for _ in range(self.game_matrix[0][0]):
+                rock_line = randrange(240 + ROCKS_CENTER_EPS, 510 - ROCKS_CENTER_EPS)
+                rock_column = randrange(160 - 85 + ROCKS_CENTER_EPS, 210 - 85 - ROCKS_CENTER_EPS)
                 rock_radius = randrange(5, 7)
                 rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
                 rock_color = ROCKS_COLORS[rock_color_index]
@@ -221,9 +188,9 @@ class GameBoard:
             self.last_drew_rocks.append(last_drew_rocks_copy[-1])
         else:
             last_drew_rocks_per_pit = []
-            for counter in range(self.game_matrix[1][-1]):
-                rock_line = randrange(240 + EPS, 500 - EPS)
-                rock_column = randrange(170 + 85 * (PITS_PER_LINE - 2) + EPS, 220 + 85 * (PITS_PER_LINE - 2) - EPS)
+            for _ in range(self.game_matrix[1][-1]):
+                rock_line = randrange(240 + ROCKS_CENTER_EPS, 500 - ROCKS_CENTER_EPS)
+                rock_column = randrange(170 + 85 * (PITS_PER_LINE - 2) + ROCKS_CENTER_EPS, 220 + 85 * (PITS_PER_LINE - 2) - ROCKS_CENTER_EPS)
                 rock_radius = randrange(5, 7)
                 rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
                 rock_color = ROCKS_COLORS[rock_color_index]
@@ -231,16 +198,47 @@ class GameBoard:
                 self.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
             self.last_drew_rocks.append(last_drew_rocks_per_pit)
 
-    def __draw_final_game_message(self):
+    def __draw_players_labels(self):
+        """ For players names labels
+        :return:
+        """
+        #First player name plus score        
+        first_player_label_text = self.first_player_label_text + ": " + self.first_player_score_label
+        first_player_label = Label(first_player_label_text, 50, 100, text_base_color=self.text_base_color)
+        score_panel = Rect(50 - 5, 100, first_player_label.get_text_img_len() + 15, 40)
+        pygame.draw.rect(SCREEN, PANEL_BACKGROUND_COLOR, score_panel)
+        first_player_label.draw_component()
+
+        # Second player name plus score
+        second_player_label_text = self.second_player_label_text + ": " + self.second_player_score_label
+        second_player_label = Label(second_player_label_text, text_base_color=self.text_base_color)
+        second_player_label.set_xy(30 + 87 * (PITS_PER_LINE - 1) - second_player_label.get_text_img_len() / 3, 550)
+        score_panel = Rect(25 + 87 * (PITS_PER_LINE - 1) - second_player_label.get_text_img_len() / 3,
+                           550,
+                           second_player_label.get_text_img_len() + 15,
+                           40)
+        pygame.draw.rect(SCREEN, PANEL_BACKGROUND_COLOR, score_panel)
+        second_player_label.draw_component()
+
+    def draw_final_game_message(self, winner: str):
         """ Draw final game message label
         :return:
         """
-        if self.winner != '':
-            new_font = pygame.font.SysFont('arial', 30)
-            if self.winner != "Draw":
-                self.winner += " win!"
-            text_img = new_font.render(self.winner,
-                                       True,
-                                       DEFAULT_TEXT_COLOR)
-            text_len = text_img.get_width()
-            SCREEN.blit(text_img, ((SCREEN_WIDTH - text_len) / 2, 160))
+        if winner != "Draw":
+            winner += " win!"
+        winner_label = Label(winner, text_base_color=self.text_base_color)
+        winner_label.set_xy((SCREEN_WIDTH - winner_label.get_text_img_len()) / 2,
+                            SCREEN_HEIGHT - 440)
+        winner_label.draw_component()
+        
+    def draw_turn(self, text):
+        text += " turn"
+        turn_panel = Rect(525 - PANEL_PADDING, 100, 230, 40)
+        pygame.draw.rect(SCREEN, PANEL_BACKGROUND_COLOR, turn_panel)
+        turn_label = Label(text, 525, 100, text_base_color=self.text_base_color)
+        turn_label.draw_component()
+
+    def draw_invalid_move_label(self, text):
+        invalid_move_label = Label(text, text_base_color=self.text_base_color)
+        invalid_move_label.set_xy((SCREEN_WIDTH - invalid_move_label.get_text_img_len()) / 2, SCREEN_HEIGHT - 440)
+        invalid_move_label.draw_component()
