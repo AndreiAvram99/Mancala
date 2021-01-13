@@ -45,7 +45,6 @@ class Label:
         self.text_base_color = text_base_color
         self.font = pygame.font.SysFont('arial', font_size)
         self.text_img = self.font.render(self.text, True, self.text_base_color)
-        print(type(self.text_img))
 
     def set_xy(self, x, y):
         """ Set label coordinates

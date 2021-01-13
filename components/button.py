@@ -70,7 +70,6 @@ class Button:
         text_len = text_img.get_width()
         SCREEN.blit(text_img, (self.x + int(self.w / 2) - int(text_len / 2), self.y + 5))
 
-    @property
     def action_button(self):
         """ Check if the button was clicked and release
         :return action: `boolean`

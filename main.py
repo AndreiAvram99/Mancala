@@ -27,24 +27,24 @@ while run:
     current_scene = scene_manager.get_current_scene()
     # Main menu scene
     if current_scene.name == "main_menu":
-        if current_scene.scene_components[PLAY_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[PLAY_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[CHOOSE_OPPONENT_SCENE])
-        if current_scene.scene_components[RULES_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[RULES_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[RULES_SCENE])
-        if current_scene.scene_components[RANKING_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[RANKING_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[RANKING_SCENE])
-        if current_scene.scene_components[QUIT_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[QUIT_BUTTON_COMPONENT].action_button():
             run = False
 
     # Choose opponent scene
     if current_scene.name == "choose_opponent":
         chose_option = False
-        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[MAIN_MENU_SCENE])
-        if current_scene.scene_components[PLAY_VS_PLAYER_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[PLAY_VS_PLAYER_BUTTON_COMPONENT].action_button():
             game_controller.reset_ai_player()
             chose_option = True
-        if current_scene.scene_components[PLAY_VS_AI_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[PLAY_VS_AI_BUTTON_COMPONENT].action_button():
             game_controller.set_ai_player()
             chose_option = True
         if chose_option:
@@ -52,9 +52,9 @@ while run:
 
     # Select names scene
     if current_scene.name == "select_names_scene":
-        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[CHOOSE_OPPONENT_SCENE])
-        if current_scene.scene_components[PLAY_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[PLAY_BUTTON_COMPONENT].action_button():
             if len(current_scene.scene_components[FIRST_PLAYER_TB_COMPONENT].text) and \
                     len(current_scene.scene_components[SECOND_PLAYER_TB_COMPONENT].text):
                 scene_manager.set_current_scene(scene_manager.scenes[GAME_SCENE])
@@ -71,30 +71,30 @@ while run:
     # Game scene
     if current_scene.name == "game_scene":
         run = game_controller.play()
-        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[CHOOSE_OPPONENT_SCENE])
             game_controller.complete_game_dict()
             game_controller.reset_all()
-        if current_scene.scene_components[PLAY_AGAIN_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[PLAY_AGAIN_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[POPUP_SCENE])
             # game_controller.play_again_reset()
 
     # Popup scene
     if current_scene.name == "popup_scene":
-        if current_scene.scene_components[YES_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[YES_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[GAME_SCENE])
             game_controller.play_again_reset()
-        if current_scene.scene_components[NO_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[NO_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[GAME_SCENE])
 
     # Rules scene
     if current_scene.name == "rules_scene":
-        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[MAIN_MENU_SCENE])
 
     #Ranking scene
     if current_scene.name == "ranking_scene":
-        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button:
+        if current_scene.scene_components[BACK_BUTTON_COMPONENT].action_button():
             scene_manager.set_current_scene(scene_manager.scenes[MAIN_MENU_SCENE])
 
     # Checking to see if the scene has changed
