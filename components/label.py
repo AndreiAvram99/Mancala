@@ -20,13 +20,16 @@ class Label:
             Label text color
         font: `pygame.font.Font`
             Label text font
+        text_img: `pygame.Surface`
+            The label itself
 
         PublicMethods:
         ---------
         set_xy(self, x, y)
         get_text(self)
-        draw_component(self)
+        def get_text_img_len(self)
         get_text_len(self)
+        draw_component(self)
         """
 
     def __init__(self,
@@ -42,6 +45,7 @@ class Label:
         self.text_base_color = text_base_color
         self.font = pygame.font.SysFont('arial', font_size)
         self.text_img = self.font.render(self.text, True, self.text_base_color)
+        print(type(self.text_img))
 
     def set_xy(self, x, y):
         """ Set label coordinates
@@ -62,6 +66,10 @@ class Label:
         return self.text
 
     def get_text_img_len(self):
+        """ Return the length of the label
+        Returns: `float`
+            Length of the label
+        """
         return self.text_img.get_width()
 
     def get_text_len(self):

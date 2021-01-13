@@ -107,7 +107,7 @@ class RankingManager:
         :return:
         """
         self.__create_ranking_dicts()
-        self.players_winners_dict = self.__sort_dict_by_values(self.players_winners_dict)
-        self.ai_winners_dict = self.__sort_dict_by_values(self.ai_winners_dict)
-        self.ranking_component.draw_ranking(self.__get_first_players(self.ai_winners_dict),
-                                            self.__get_first_players(self.players_winners_dict))
+        self.players_winners_dict = RankingManager.__sort_dict_by_values(self.players_winners_dict)
+        self.ai_winners_dict = RankingManager.__sort_dict_by_values(self.ai_winners_dict)
+        self.ranking_component.draw_ranking(RankingManager.__get_first_players(self.ai_winners_dict),
+                                            RankingManager.__get_first_players(self.players_winners_dict))

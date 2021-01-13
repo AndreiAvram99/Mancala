@@ -18,17 +18,13 @@ class GameBoard:
         ---------
         game_matrix: `List[List[int]]`
             This attribute contains the current scene
-        font: `pygame.font.Font`
-            Pit's number of rocks label font
         text_base_color: `[int, int, int]`
             Pit's number of rocks label text color
         last_drew_rocks: `list`
             List of the rocks characteristics for every pit
-        winner: `str`
-            Game winner
-        first_player_label: `str`
+        first_player_label_text: `str`
             First player name label
-        second_player_label: `str`
+        second_player_label_text: `str`
             Second player name label
         first_player_score_label: `str`
             First player score label
@@ -39,13 +35,16 @@ class GameBoard:
         ---------
         set_players_names_labels(self, first_player_label: str, second_player_label: str)
         set_players_scores_labels(self, first_player_score: int, second_player_score: int)
-        def draw_component(self)
+        draw_component(self)
+        draw_final_game_message(self)
+        draw_turn(self, text)
+        draw_invalid_move_label(self, text)
 
         PrivateMethods:
         ---------
-        __draw_players_labels(self)
         __draw_rocks_nb_labels(self)
-        __draw_final_game_message(self)
+        __draw_rocks(self)
+        __draw_players_labels(self)
 
         StaticMethods:
         ---------
@@ -150,7 +149,7 @@ class GameBoard:
                 if len(last_drew_rocks_copy) != 0 and \
                         self.game_matrix[line][column] == len(last_drew_rocks_copy[target]):
                     for counter in range(len(last_drew_rocks_copy[target])):
-                        self.__draw_rock(last_drew_rocks_copy[target][counter])
+                        GameBoard.__draw_rock(last_drew_rocks_copy[target][counter])
                     self.last_drew_rocks.append(last_drew_rocks_copy[target])
                 else:
                     for _ in range(self.game_matrix[line][column]):
@@ -163,12 +162,12 @@ class GameBoard:
                         rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
                         rock_color = ROCKS_COLORS[rock_color_index]
                         last_drew_rocks_per_pit.append([rock_color, rock_column, rock_line, rock_radius])
-                        self.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
+                        GameBoard.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
                     self.last_drew_rocks.append(last_drew_rocks_per_pit)
 
         if last_drew_rocks_copy and self.game_matrix[0][0] == len(last_drew_rocks_copy[-2]):
             for counter in range(len(last_drew_rocks_copy[-2])):
-                self.__draw_rock(last_drew_rocks_copy[-2][counter])
+                GameBoard.__draw_rock(last_drew_rocks_copy[-2][counter])
             self.last_drew_rocks.append(last_drew_rocks_copy[-2])
         else:
             last_drew_rocks_per_pit = []
@@ -179,12 +178,12 @@ class GameBoard:
                 rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
                 rock_color = ROCKS_COLORS[rock_color_index]
                 last_drew_rocks_per_pit.append([rock_color, rock_column, rock_line, rock_radius])
-                self.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
+                GameBoard.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
             self.last_drew_rocks.append(last_drew_rocks_per_pit)
 
         if last_drew_rocks_copy and self.game_matrix[1][-1] == len(last_drew_rocks_copy[-1]):
             for counter in range(len(last_drew_rocks_copy[-1])):
-                self.__draw_rock(last_drew_rocks_copy[-1][counter])
+                GameBoard.__draw_rock(last_drew_rocks_copy[-1][counter])
             self.last_drew_rocks.append(last_drew_rocks_copy[-1])
         else:
             last_drew_rocks_per_pit = []
@@ -195,7 +194,7 @@ class GameBoard:
                 rock_color_index = randint(0, len(ROCKS_COLORS) - 1)
                 rock_color = ROCKS_COLORS[rock_color_index]
                 last_drew_rocks_per_pit.append([rock_color, rock_column, rock_line, rock_radius])
-                self.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
+                GameBoard.__draw_rock([rock_color, rock_column, rock_line, rock_radius])
             self.last_drew_rocks.append(last_drew_rocks_per_pit)
 
     def __draw_players_labels(self):
@@ -222,7 +221,10 @@ class GameBoard:
 
     def draw_final_game_message(self, winner: str):
         """ Draw final game message label
-        :return:
+        Args:
+            winner: `str`
+                Represent the name of the winner
+        Returns:
         """
         if winner != "Draw":
             winner += " win!"
@@ -232,6 +234,13 @@ class GameBoard:
         winner_label.draw_component()
         
     def draw_turn(self, text):
+        """ This method draw player turn message
+        Args:
+            text: `str`
+                Indicates the name of the player whose turn it is
+
+        Returns:
+        """
         text += " turn"
         turn_panel = Rect(525 - PANEL_PADDING, 100, 230, 40)
         pygame.draw.rect(SCREEN, PANEL_BACKGROUND_COLOR, turn_panel)
@@ -239,6 +248,13 @@ class GameBoard:
         turn_label.draw_component()
 
     def draw_invalid_move_label(self, text):
+        """ Draw an warning message in case of a wrong move
+        Args:
+            text: `str`
+                Warning message text
+        Returns:
+
+        """
         invalid_move_label = Label(text, text_base_color=self.text_base_color)
         invalid_move_label.set_xy((SCREEN_WIDTH - invalid_move_label.get_text_img_len()) / 2, SCREEN_HEIGHT - 440)
         invalid_move_label.draw_component()

@@ -16,8 +16,8 @@ class TextBox:
                 Text box background color
             text: `str`
                 Text box text
-            font: `pygame.font.Font`
-                Text box text font
+            text_img: `pygame.Surface`
+                Surface of the text box's text
             active: `boolean`
                 Flag:
                     True for clicked in text box
@@ -46,7 +46,6 @@ class TextBox:
         :return:
         """
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # If the user clicked on the input_box rect
             if self.rect.collidepoint(event.pos):
                 self.active = True
                 pygame.draw.rect(SCREEN, TB_COLOR_ACTIVE, self.rect)

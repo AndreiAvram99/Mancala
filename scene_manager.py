@@ -35,7 +35,7 @@ class SceneManager:
     """
     def __init__(self):
         self.screen = SCREEN
-        self.scenes = self.__create_scenes()
+        self.scenes = SceneManager.__create_scenes()
         self.current_scene = self.scenes[MAIN_MENU_SCENE]
 
     def set_current_scene(self, scene: Scene):
@@ -108,8 +108,8 @@ class SceneManager:
         select_names_scene.add_components(select_names_scene_components)
 
         #Create game scene
-        play_again_button = Button("Play again", (SCREEN_WIDTH - 170), 10, w=160, h=50)
         game_board = GameBoard()
+        play_again_button = Button("Play again", (SCREEN_WIDTH - 170), 10, w=160, h=50)
         game_scene_components = [back_button, game_board, play_again_button]
         game_scene.add_components(game_scene_components)
 

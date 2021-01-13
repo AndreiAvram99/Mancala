@@ -41,6 +41,8 @@ class GameController:
             Counts the number of draw games with the same players
         game_dict: `dict`
             Store information about all games
+        turn_association: `dict`
+            Associate a name with player turn
 
         PublicMethods:
         ---------
@@ -50,7 +52,7 @@ class GameController:
         reset_ai_player(self)
         set_ai_player(self)
         reset_nb_of_draw_games(self)
-        set_players_names(self, first_player_name, second_player_name)
+        set_players_names_and_scores(self, first_player_name, second_player_name)
         reset_scores(self)
         change_turn(self)
         reset_turn(self)
@@ -95,11 +97,12 @@ class GameController:
         """ Restores the dictionary if more games have been added.
         :return:
         """
-        games_file = open('resources/games/games_file', 'a')
-        self.game_dict = self.__dict__.copy()
-        self.game_dict.pop('game_board')
-        self.game_dict.pop('game_dict')
-        games_file.write(str(self.game_dict) + '\n')
+        if self.first_player_score != 0 or self.second_player_score != 0:
+            games_file = open('resources/games/games_file', 'a')
+            self.game_dict = self.__dict__.copy()
+            self.game_dict.pop('game_board')
+            self.game_dict.pop('game_dict')
+            games_file.write(str(self.game_dict) + '\n')
 
     def play_again_reset(self):
         """ Reset attributes in case of play again with the same players
@@ -454,7 +457,7 @@ class GameController:
             # Player move
             elif event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
-                matrix_positions = self.get_matrix_pos_from_mouse(pos)
+                matrix_positions = GameController.get_matrix_pos_from_mouse(pos)
                 if not self.winner:
                     if self.valid_move(matrix_positions[0], matrix_positions[1], self.turn):
 

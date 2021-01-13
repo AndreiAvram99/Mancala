@@ -14,7 +14,7 @@ class Scene:
         ---------
         name: `str`
             Scene name
-        ui_components: `list`
+        scene_components: `list`
             List of scene components
         background: `str`
             Path to background file
